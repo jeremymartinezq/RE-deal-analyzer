@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Icons</title>
+  <style>
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    .canvas-container { margin: 10px; display: inline-block; }
+    .download-all { margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>Icon Generator</h1>
+  <button class="download-all">Download All Icons</button>
+  <div id="icons"></div>
+
+  <script>
+    const sizes = [16, 32, 48, 128];
+    
+    function drawIcon(canvas, disabled = false) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+
+      // Background circle
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2 - size/10, 0, Math.PI * 2);
+      ctx.fillStyle = disabled ? '#999999' : '#2196f3';
+      ctx.fill();
+
+      // House
+      const houseColor = disabled ? '#cccccc' : '#ffffff';
+      ctx.fillStyle = houseColor;
+      
+      // Roof
+      ctx.beginPath();
+      ctx.moveTo(size/2, size/5);
+      ctx.lineTo(size/5, size/2);
+      ctx.lineTo(4*size/5, size/2);
+      ctx.closePath();
+      ctx.fill();
+
+      // House body
+      ctx.fillRect(size/3, size/2, size/3, size/3);
+
+      // Graph line
+      ctx.beginPath();
+      ctx.moveTo(size/3, 2*size/3);
+      ctx.lineTo(size/2, size/2);
+      ctx.lineTo(2*size/3, 3*size/5);
+      ctx.strokeStyle = houseColor;
+      ctx.lineWidth = Math.max(1, size/16);
+      ctx.stroke();
+    }
+
+    function downloadCanvas(canvas, filename) {
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    const container = document.getElementById('icons');
+    const iconCanvases = [];
+
+    sizes.forEach(size => {
+      const div = document.createElement('div');
+      div.className = 'canvas-container';
+      
+      // Regular icon
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      drawIcon(canvas);
+      div.appendChild(canvas);
+      iconCanvases.push({ canvas, filename: `icon${size}.png` });
+
+      // Disabled icon
+      const disabledCanvas = document.createElement('canvas');
+      disabledCanvas.width = size;
+      disabledCanvas.height = size;
+      drawIcon(disabledCanvas, true);
+      div.appendChild(disabledCanvas);
+      iconCanvases.push({ canvas: disabledCanvas, filename: `icon${size}-disabled.png` });
+
+      container.appendChild(div);
+    });
+
+    document.querySelector('.download-all').addEventListener('click', () => {
+      iconCanvases.forEach(({ canvas, filename }) => {
+        downloadCanvas(canvas, filename);
+      });
+    });
+  </script>
+</body>
+</html> 

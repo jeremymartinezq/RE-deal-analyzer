@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .preview { margin: 20px 0; }
+        canvas { border: 1px solid #ccc; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Real Estate Deal Analyzer Icon Generator</h1>
+    <button onclick="downloadAll()">Download All Icons</button>
+    <div class="preview"></div>
+
+    <script>
+        const sizes = [16, 32, 48, 128];
+        const preview = document.querySelector('.preview');
+        const icons = [];
+
+        function drawIcon(canvas, disabled = false) {
+            const ctx = canvas.getContext('2d');
+            const size = canvas.width;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Background circle
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - size/10, 0, Math.PI * 2);
+            ctx.fillStyle = disabled ? '#999999' : '#2196f3';
+            ctx.fill();
+
+            // House
+            const houseColor = disabled ? '#cccccc' : '#ffffff';
+            ctx.fillStyle = houseColor;
+            
+            // Roof
+            ctx.beginPath();
+            ctx.moveTo(size/2, size/5);
+            ctx.lineTo(size/5, size/2);
+            ctx.lineTo(4*size/5, size/2);
+            ctx.closePath();
+            ctx.fill();
+
+            // House body
+            ctx.fillRect(size/3, size/2, size/3, size/3);
+
+            // Graph line
+            ctx.beginPath();
+            ctx.moveTo(size/3, 2*size/3);
+            ctx.lineTo(size/2, size/2);
+            ctx.lineTo(2*size/3, 3*size/5);
+            ctx.strokeStyle = houseColor;
+            ctx.lineWidth = Math.max(1, size/16);
+            ctx.stroke();
+        }
+
+        // Create canvases for all sizes
+        sizes.forEach(size => {
+            // Regular icon
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = size;
+            drawIcon(canvas);
+            preview.appendChild(canvas);
+            icons.push({
+                canvas,
+                filename: `icon${size}.png`
+            });
+
+            // Disabled icon
+            const disabledCanvas = document.createElement('canvas');
+            disabledCanvas.width = disabledCanvas.height = size;
+            drawIcon(disabledCanvas, true);
+            preview.appendChild(disabledCanvas);
+            icons.push({
+                canvas: disabledCanvas,
+                filename: `icon${size}-disabled.png`
+            });
+        });
+
+        function downloadAll() {
+            icons.forEach(({canvas, filename}) => {
+                const link = document.createElement('a');
+                link.download = filename;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html> 

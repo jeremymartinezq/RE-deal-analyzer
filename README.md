@@ -1,6 +1,6 @@
 # Real Estate Deal Analyzer
 
-A comprehensive real estate investment analysis tool that helps investors evaluate properties and market conditions.
+A comprehensive real estate investment analysis tool that helps investors evaluate properties and market conditions, leveraging advanced AI algorithms and machine learning models to provide detailed financial analysis, risk assessment, and market insights. The tool combines traditional real estate metrics with cutting-edge technology to deliver accurate property valuations, generate professional investment reports, and offer data-driven recommendations for investment decisions across residential, commercial, and mixed-use properties.
 
 ## Features
 
